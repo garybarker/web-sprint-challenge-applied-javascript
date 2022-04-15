@@ -1,3 +1,5 @@
+import axios from "axios";
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -16,8 +18,37 @@ const Card = (article) => {
   //     <span>By { authorName }</span>
   //   </div>
   // </div>
-  //
+
+  const cardDiv = document.createElement("div");
+  const headlineDiv = document.createElement("div");
+  const authorDiv = document.createElement("div");
+  const imageDiv = document.createElement("div");
+  const image = document.createElement("img");
+  const name = document.createElement("span");
+
+  cardDiv.appendChild(headlineDiv);
+  cardDiv.appendChild(authorDiv);
+  authorDiv.appendChild(imageDiv);
+  authorDiv.appendChild(name);
+  imageDiv.appendChild(image);
+
+  cardDiv.classList.add("card");
+  headlineDiv.classList.add("headline");
+  authorDiv.classList.add("author");
+  imageDiv.classList.add("img-container");
+  
+
+  image.src = `${article.authorPhoto}`;
+  headlineDiv.textContent = `${article.headline}`;
+  name.textContent = `By ${article.authorName}`;
+
+  cardDiv.addEventListener("click", () => {
+    console.log(`${article.headline}`);
+  });
+
+  return cardDiv;
 }
+
 
 const cardAppender = (selector) => {
   // TASK 6
@@ -28,6 +59,32 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+  axios.get(`http://localhost:5001/api/articles`)
+  .then(res => {
+    const selected = document.querySelector(selector);
+
+    res.data.articles.javascript.forEach(element => {
+      selected.appendChild(Card(element))
+    });
+    res.data.articles.bootstrap.forEach(element => {
+      selected.appendChild(Card(element))
+    });
+    res.data.articles.technology.forEach(element => {
+      selected.appendChild(Card(element))
+    });
+    res.data.articles.jquery.forEach(element => {
+      selected.appendChild(Card(element))
+    });
+    res.data.articles.node.forEach(element => {
+      selected.appendChild(Card(element))
+    });
+     })
+     
+    
+  .catch(err => {
+    console.error(err)
+  })
 }
+
 
 export { Card, cardAppender }
