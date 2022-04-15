@@ -59,31 +59,19 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+  
   axios.get(`http://localhost:5001/api/articles`)
-  .then(res => {
+    .then(res => {
     const selected = document.querySelector(selector);
+    const article = res.data.articles;
 
-    res.data.articles.javascript.forEach(element => {
+    Object.keys(article).map(topic => article[topic].forEach(element => {
       selected.appendChild(Card(element))
-    });
-    res.data.articles.bootstrap.forEach(element => {
-      selected.appendChild(Card(element))
-    });
-    res.data.articles.technology.forEach(element => {
-      selected.appendChild(Card(element))
-    });
-    res.data.articles.jquery.forEach(element => {
-      selected.appendChild(Card(element))
-    });
-    res.data.articles.node.forEach(element => {
-      selected.appendChild(Card(element))
-    });
-     })
-     
-    
-  .catch(err => {
-    console.error(err)
-  })
+    }))
+    })
+    .catch(function (err) {
+        return console.error(err);
+      })
 }
 
 
